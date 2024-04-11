@@ -5,6 +5,7 @@ try {
     const modalBackdrop = document.querySelector('.modal-backdrop');
     const modalCloserElements = document.querySelectorAll('[data-modal-close]');
     const form = document.querySelector('.form');
+    const formAlert = document.querySelector('.form-alert');
 
     registerButton.addEventListener('click', () => {
         modalBackdrop.classList.add('modal-backdrop--open');
@@ -35,6 +36,18 @@ try {
         const name = e.target.querySelector('#name').value.trim();
         const phone = e.target.querySelector('#phone').value?.replace(/[^0-9]/g, '');
 
+        if (!name.length) {
+            formAlert.textContent = 'Ismingizni kiriting';
+            formAlert.classList.add('open');
+            return;
+        }
+
+        if (phone?.length !== 12) {
+            formAlert.textContent = 'Telefon raqamingizni kiriting';
+            formAlert.classList.add('open');
+            return;
+        }
+
         if (name.length && phone?.length === 12) {
             submitButton.setAttribute('disabled', true);
             submitButton.textContent = 'Yuborilmoqda...'
@@ -44,7 +57,8 @@ try {
                 phone,
                 time: new Date().toLocaleString()
             }))
-            
+
+            formAlert.classList.remove('open');
             window.location.href = `../last.html`
         }
     })
